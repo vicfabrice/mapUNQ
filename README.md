@@ -22,3 +22,6 @@ En función de las herramientas evaluadas, realizar una prueba de concepto de ap
 
 Debemos tener en mente la necesidad de definir un proceso que permita articular con la gente de hábitat de UNQ para incorporar fácilmente nuevas versiones de la cartografía
 
+## Enlaces útiles
+
+[Trello](https://trello.com/b/0pPfO6LS)
