@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "ar.edu.unq.mapunq_app_rest"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

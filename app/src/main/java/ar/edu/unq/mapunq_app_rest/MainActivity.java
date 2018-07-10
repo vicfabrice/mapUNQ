@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -22,10 +23,13 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -34,6 +38,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import model.Analysis;
 import model.Guess;
@@ -128,16 +133,23 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         //Lee un usuario de memoria interna
+        
         try {
-
             String us;
-            FileReader fr = new FileReader("mapunqID");
-            us = fr.toString();
+            FileInputStream fis = null;
+            String filePath = getApplicationContext().getFilesDir().getPath() + "/mapunqID";
+            Log.e("filePath", filePath);
+            fis = new FileInputStream(filePath);
+            BufferedReader bfr = new BufferedReader(new InputStreamReader(fis));
+            us = bfr.lines().collect(Collectors.joining());
+            Log.e("usID", us);
+            //String message = org.apache.commons.io.IOUtils.toString(bfr);
             user = us;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.e("mapunqID", user);
         }
+        Log.e("mapunqID", user);
+
         // falta hacer el close del fr
 
         final String BASE_URL = "https://cloud.internalpositioning.com";
