@@ -12,8 +12,12 @@ public class PointOfInterest {
     @PrimaryKey
     private String pointId;
 
+    @ColumnInfo(name = "nombre")
+    private String nombrePOI;
+
     @ColumnInfo(name = "info")
     private String infoPOI;
+
 
     @ColumnInfo(name = "floor")
     private String floorOfPOI;
@@ -52,5 +56,13 @@ public class PointOfInterest {
 
     public void setBuildingOfPOI(String buildingOfPOI) {
         this.buildingOfPOI = buildingOfPOI;
+    }
+
+    public String getNombrePOI() {
+        return nombrePOI;
+    }
+
+    public void setNombrePOI(String nombrePOI) {
+        this.nombrePOI = nombrePOI;
     }
 }

@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         //Lee un usuario de memoria interna
-        
+
         try {
             String us;
             FileInputStream fis = null;
@@ -145,13 +145,14 @@ public class MainActivity extends AppCompatActivity {
             Log.e("usID", us);
             //String message = org.apache.commons.io.IOUtils.toString(bfr);
             user = us;
+            Log.e("mapunqID", user);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Log.e("mapunqID", user);
 
-        // falta hacer el close del fr
+        // falta hacer el close del fis?
 
+        //Levanta retrofit para hacer la llamada al server y traerse un json
         final String BASE_URL = "https://cloud.internalpositioning.com";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -167,11 +168,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Response<Analysis> response, Retrofit retrofit) {
                 final Analysis analysis = response.body();
-                //Ubicacion ubicacion = response.body();
                 try {
                     ArrayList<Guess> data = new ArrayList<>(analysis.getAnalysis().getGuesses());
-
-                    //analysis.setGuesses(data);
 
                     TextView ubicacionIdText = (TextView) findViewById(R.id.labelUb);
                     final TextView ubicacionContentText = (TextView) findViewById(R.id.lblId);
@@ -193,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
+        //Comportamiento del botón UBICARME
         ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
 
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -207,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     //ubicacionContentText.setText(analysis.getAnalysis().mostProbablyLocation());
 
 
-                    // 24/7 alarm
+                    // Notificación -- Código de FIND3
                     ll24 = new Intent(MainActivity.this, DespertarDispositivoReceiver.class);
                     Log.d(TAG, "setting familyName to unq");
                     ll24.putExtra("deviceName", user);
@@ -249,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
             }
             });
     }
+    //Conexión websocket, código FIND3
     private void connectWebSocket(){
         URI uri;
         try {
