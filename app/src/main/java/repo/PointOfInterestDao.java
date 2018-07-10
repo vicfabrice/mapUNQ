@@ -23,7 +23,7 @@ public interface PointOfInterestDao {
     PointOfInterest findByPointId(String first);
 
     @Insert
-    void insertAll(PointOfInterest pois);
+    void insertAll(List<PointOfInterest> pois);
 
     @Delete
     void delete(PointOfInterest poi);

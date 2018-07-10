@@ -20,8 +20,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract PointOfInterestDao pointOfInterestDao();
 
-
-    private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
+    //private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
+    private Boolean mIsDatabaseCreated = Boolean.FALSE;
 
 
     public static AppDatabase getInstance(final Context context) {
@@ -38,62 +38,8 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    /**
-     * Build the database. {@link Builder#build()} only sets up the database configuration and
-     * creates a new instance of the database.
-     * The SQLite database is only created when it's accessed for the first time.
-     */
-    private static AppDatabase buildDatabase(final Context appContext) {
-
-        // Generate the data for pre-population
-        AppDatabase database = AppDatabase.getInstance(appContext);
-        List<PointOfInterest> pointofinterests = DataGenerator.generateProducts();
-        List<CommentEntity> comments =
-                DataGenerator.generateCommentsForProducts(products);
-
-        insertData(database, products, comments);
-        // notify that the database was created and it's ready to be used
-        database.setDatabaseCreated();
-
-        return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME;
-
-
-
-
-
-                            // Generate the data for pre-population
-                            AppDatabase database = AppDatabase.getInstance(appContext, executors);
-                            List<ProductEntity> products = DataGenerator.generateProducts();
-                            List<CommentEntity> comments =
-                                    DataGenerator.generateCommentsForProducts(products);
-
-                            insertData(database, products, comments);
-                            // notify that the database was created and it's ready to be used
-                            database.setDatabaseCreated();
-                        });
-                    }
-                }).build();
-    }
-
-    /**
-     * Check whether the database already exists and expose it via {@link #getDatabaseCreated()}
-     */
-    private void updateDatabaseCreated(final Context context) {
-        if (context.getDatabasePath(DATABASE_NAME).exists()) {
-            setDatabaseCreated();
-        }
-    }
-
-    private void setDatabaseCreated(){
-        mIsDatabaseCreated.postValue(true);
-    }
-
-    private static void insertData(final AppDatabase database, final List<ProductEntity> products,
-                                   final List<CommentEntity> comments) {
-        database.runInTransaction(() -> {
-            database.productDao().insertAll(products);
-            database.commentDao().insertAll(comments);
-        });
+    public Boolean getDatabaseCreated(){
+        return mIsDatabaseCreated;
     }
 
     private static void addDelay() {
@@ -103,7 +49,38 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    public LiveData<Boolean> getDatabaseCreated() {
-        return mIsDatabaseCreated;
+    private static void insertData(final AppDatabase database, final List<PointOfInterest> pois){
+        database.pointOfInterestDao().insertAll(pois);
     }
+
+    private void setDatabaseCreated(){
+        mIsDatabaseCreated = true;
+    }
+
+    private void updateDatabaseCreated(final Context context) {
+        if (context.getDatabasePath(DATABASE_NAME).exists()) {
+            setDatabaseCreated();
+        }
+    }
+
+    /**
+     * Build the database. {@link Builder#build()} only sets up the database configuration and
+     * creates a new instance of the database.
+     * The SQLite database is only created when it's accessed for the first time.
+     */
+    private static AppDatabase buildDatabase(final Context appContext) {
+
+        // Generate the data for pre-population
+        AppDatabase database = AppDatabase.getInstance(appContext);
+        List<PointOfInterest> pointofinterests = DataGenerator.generatePointOfInterest();
+
+
+        insertData(database, pointofinterests);
+        // notify that the database was created and it's ready to be used
+        database.setDatabaseCreated();
+        
+        return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME).build();
+
+    }
+
 }
