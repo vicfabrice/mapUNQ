@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MapUNQ</string>
+    <string name="labelUb">Ubicación</string>
+    <string name="labelInfo">Información de interés</string>
+    <string name="action_settings">Settings</string>
+    <string name="contentOfMara">Revisiones de TIP y consultas sobre Organización de computadoras</string>
+    <string name="labelOtroLugar">Estás cerca de</string>
+    <string name="toggleButton">Refrescar</string>
+    <string name="checkbox">Usar GPS (puede consumir bateria)</string>
+
+</resources>
