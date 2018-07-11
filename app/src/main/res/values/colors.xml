@@ -3,5 +3,7 @@
     <color name="colorPrimary">#CE2600</color>
     <color name="colorPrimaryLight">#ff5e32</color>
     <color name="colorPrimaryDark">#950000</color>
+    <color name="colorLight">#FFAA90</color>
+    <color name="colorLight2">#FDE9E7</color>
 
 </resources>

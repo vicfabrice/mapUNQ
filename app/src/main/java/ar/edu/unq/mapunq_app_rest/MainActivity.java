@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    // El sistema realiza esta llamada cuando crea la actividad.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
 
         //Lee un usuario de memoria interna
 
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     final TextView ubicacionContentText = (TextView) findViewById(R.id.lblId);
                     ubicacionContentText.setText(analysis.getAnalysis().mostProbablyLocation());
                     TextView infoText = (TextView) findViewById(R.id.labelInfo);
-                    TextView contentInfoText = (TextView) findViewById(R.id.contentOfMara);
+                    TextView contentInfoText = (TextView) findViewById(R.id.poiInfo);
                     TextView ubicacionCercanaIdText = (TextView) findViewById(R.id.lblCerca);
                     ubicacionCercanaIdText.setText(analysis.getAnalysis().almostProbablyLocation());
                 }catch (Exception e){
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //Comportamiento del botón UBICARME
+        //Comportamiento del botón UBICARME - similar a FIND3
         ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
 
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
