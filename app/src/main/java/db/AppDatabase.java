@@ -1,6 +1,5 @@
-package repo;
+package db;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
@@ -8,13 +7,14 @@ import android.content.Context;
 
 import java.util.List;
 
+//Para hacer la parte de la db, me basé en el ejemplo de Android - Basic Sample
+// https://github.com/googlesamples/android-architecture-components/tree/master/BasicSample
 
-@Database(entities = {PointOfInterest.class}, version = 1)
+@Database(entities = {PointOfInterestEntity.class}, version = 1)
 
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase sInstance;
-
 
     public static final String DATABASE_NAME = "database-pointofinterest";
 
@@ -49,7 +49,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    private static void insertData(final AppDatabase database, final List<PointOfInterest> pois){
+    private static void insertData(final AppDatabase database, final List<PointOfInterestEntity> pois){
         database.pointOfInterestDao().insertAll(pois);
     }
 
@@ -72,13 +72,13 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // Generate the data for pre-population
         AppDatabase database = AppDatabase.getInstance(appContext);
-        List<PointOfInterest> pointofinterests = DataGenerator.generatePointOfInterest();
+        List<PointOfInterestEntity> pointofinterests = DataGenerator.generatePointOfInterest();
 
 
         insertData(database, pointofinterests);
         // notify that the database was created and it's ready to be used
         database.setDatabaseCreated();
-        
+
         return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME).build();
 
     }

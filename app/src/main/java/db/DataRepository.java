@@ -1,18 +1,18 @@
-package repo;
+package db;
 
 import java.util.ArrayList;
 import java.util.List;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
 
+//Repositorio con la data de los POI
 public class DataRepository {
 
     private static DataRepository sInstance;
 
     private final AppDatabase mDatabase;
-    //private MediatorLiveData<List<PointOfInterest>> mObservableProducts;
-    private List<PointOfInterest> mObservableProducts;
+    private List<PointOfInterestEntity> mObservableProducts;
 
+    //Constructor
     private DataRepository(final AppDatabase database) {
         mDatabase = database;
         mObservableProducts = new ArrayList<>();

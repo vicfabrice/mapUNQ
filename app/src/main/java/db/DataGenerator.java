@@ -1,4 +1,4 @@
-package repo;
+package db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +70,11 @@ public class DataGenerator {
             "Principal", "Principal", "Principal",
             "Principal"};
 
-    public static List<PointOfInterest> generatePointOfInterest() {
-        List<PointOfInterest> pois = new ArrayList<PointOfInterest>(pointId.length * nombrePOI.length);
+    public static List<PointOfInterestEntity> generatePointOfInterest() {
+        List<PointOfInterestEntity> pois = new ArrayList<PointOfInterestEntity>(pointId.length * nombrePOI.length);
 
         for (int i = 0; i < pointId.length; i++) {
-                PointOfInterest poi = new PointOfInterest();
+                PointOfInterestEntity poi = new PointOfInterestEntity();
                 poi.setPointId(pointId[i]);
                 poi.setNombrePOI(nombrePOI[i]);
                 poi.setInfoPOI(infoPOI[i]);
