@@ -4,26 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import android.arch.lifecycle.LiveData;
 
+import model.PointOfInterest;
+
 //Repositorio con la data de los POI
 public class DataRepository {
 
     private static DataRepository sInstance;
 
     private final AppDatabase mDatabase;
-    private List<PointOfInterestEntity> mObservableProducts;
+    private List<PointOfInterestEntity> mPois;
 
     //Constructor
     private DataRepository(final AppDatabase database) {
         mDatabase = database;
-        mObservableProducts = new ArrayList<>();
-
-        if (mDatabase.)
-        mObservableProducts.addAll(mDatabase.pointOfInterestDao().getAll(),
-                pointOfInterestEntities -> {
-                    if (mDatabase.getDatabaseCreated().getValue() != null) {
-                        mObservableProducts.addAll(pointOfInterestEntities);
-                    }
-                });
+        mPois = new ArrayList<>();
+        mPois.addAll(mDatabase.pointOfInterestDao().loadAllPointsOfInterest()); //no estoy segura d esta linea
     }
 
     public static DataRepository getInstance(final AppDatabase database) {
@@ -37,18 +32,12 @@ public class DataRepository {
         return sInstance;
     }
 
-    /**
-     * Get the list of products from the database and get notified when the data changes.
-     */
-    public LiveData<List<ProductEntity>> getProducts() {
-        return mObservableProducts;
+
+    public List<PointOfInterestEntity> getPois() {
+        return mPois;
     }
 
-    public LiveData<ProductEntity> loadProduct(final int productId) {
-        return mDatabase.productDao().loadProduct(productId);
-    }
-
-    public LiveData<List<CommentEntity>> loadComments(final int productId) {
-        return mDatabase.commentDao().loadComments(productId);
+    public PointOfInterestEntity loadPoi(final String poiId) {
+        return mDatabase.pointOfInterestDao().loadPointOfInterestByPointId(poiId);
     }
 }

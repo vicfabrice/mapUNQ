@@ -91,4 +91,8 @@ public class PointOfInterestEntity implements PointOfInterest {
         this.buildingOfPOI = poi.getBuildingOfPOI();
 
     }
+
+    public PointOfInterestEntity(){
+
+    }
 }
