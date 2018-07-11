@@ -8,7 +8,7 @@ import model.PointOfInterest;
 
 //Los puntos de interés poseen Id (el nombre con el que van a llegar desde el server), nombre (el nombre real),
 //info (qué se puede hacer ahí), floor (en qué piso quedan), building (en qué edificio de la UNQ quedan)
-//Sería importante también sumar características de orientación (norte, sur, etc) 
+//Sería importante también sumar características de orientación (norte, sur, etc)
 @Entity(tableName = "pointsofinterest")
 public class PointOfInterestEntity implements PointOfInterest {
 
@@ -69,6 +69,10 @@ public class PointOfInterestEntity implements PointOfInterest {
     @Override
     public String getNombrePOI() {
         return nombrePOI;
+    }
+
+    public void setNombrePOI(String nombrePOI) {
+        this.nombrePOI = nombrePOI;
     }
 
     public PointOfInterestEntity(String pointId, String nombrePOI, String infoPOI, String floorOfPOI, String buildingOfPOI) {

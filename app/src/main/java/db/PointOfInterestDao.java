@@ -12,10 +12,7 @@ import java.util.List;
 public interface PointOfInterestDao {
 
     @Query("SELECT * FROM pointsofinterest")
-    List<PointOfInterestEntity> loadAllPointOfInterest();
-
-    @Query("select * from pointsofinterest where pointId = :pointId")
-    List<PointOfInterestEntity> loadPointOfInterest(int productId);
+    List<PointOfInterestEntity> loadAllPointsOfInterest();
 
     @Query("SELECT * FROM pointsofinterest WHERE pointId IN (:pointIds)")
     List<PointOfInterestEntity> loadAllByIds(int[] pointIds);
@@ -24,7 +21,7 @@ public interface PointOfInterestDao {
     String getInfoByPointId(String first);
 
     @Query("SELECT * FROM pointsofinterest WHERE pointId LIKE :first LIMIT 1")
-    PointOfInterestEntity findByPointId(String first);
+    PointOfInterestEntity loadPointOfInterestByPointId(String first);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<PointOfInterestEntity> pois);
