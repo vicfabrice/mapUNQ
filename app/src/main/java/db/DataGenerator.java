@@ -10,7 +10,7 @@ import java.util.List;
 public class DataGenerator {
 
     private static final String[] pointId = new String[]{
-            "afuera de oficina pablo", "afuera oficina pablo",
+            "?","afuera de oficina pablo", "afuera oficina pablo",
             "aula 13", "aula 37b","aula 60", "aula 83", "aula 213", "aula 30", "aula 121",
             "aula 36", "aula 28 música", "aula 101", "aula 38",
             "box 4 alumnos", "box 5 asuntos estudiantiles", "box 7 asuntos estudiantiles",
@@ -22,7 +22,7 @@ public class DataGenerator {
             "rosa de los vientos",
                };
     private static final String[] nombrePOI = new String[]{
-            "Puerta de la oficina de Pablo Suarez", "Puerta de la oficina de Pablo Suarez",
+            "Ubicación desconocida","Puerta de la oficina de Pablo Suarez", "Puerta de la oficina de Pablo Suarez",
             "Aula 13", "Aula 37b","Aula 60", "Aula 83", "Aula 213", "Aula 30", "Aula 121",
             "Aula 36", "Aula 28 de música", "Aula 101", "Aula 38",
             "Box 4", "Box 5", "Box 7",
@@ -33,7 +33,7 @@ public class DataGenerator {
             "Oficina 35", "Oficina 37", "Oficina de Mara",
             "Rosa de los Vientos"};
     private static final String[] infoPOI = new String[]{
-            "Pablo Suárez es el director de T.P.I", "Pablo Suárez es el director de T.P.I",
+            "No tenemos información para esta ubicación","Pablo Suárez es el director de T.P.I", "Pablo Suárez es el director de T.P.I",
             "Aula 13", "Aula con acceso a computadors","Aula 60", "Aula 83", "Aula 213",
             "Aula 30", "Aula 121",
             "Aula 36", "Clases de música", "Aula 101", "Aula 38",
@@ -45,7 +45,7 @@ public class DataGenerator {
             "oficina 35", "oficina 37", "Oficina de la profesora Mara Dalponte",
             "Rosa de los Vientos"};
     private static final String[] floor = new String[]{
-            "Primer piso", "Primer piso",
+            " ","Primer piso", "Primer piso",
             "Planta baja", "Planta baja","Planta baja", "Segundo Piso", "Segundo Piso",
             "Planta baja", "Aula 121",
             "Planta baja", "Primer piso", "Aula 101", "Planta baja",
@@ -58,7 +58,7 @@ public class DataGenerator {
             "Primer piso"};
 
     private static final String[] building = new String[]{
-            "Principal", "Principal",
+            " ","Principal", "Principal",
             "Principal", "Principal","Principal", "Principal", "Principal",
             "Principal", "Principal",
             "Principal", "Principal", "Principal", "Principal",
