@@ -13,7 +13,7 @@ import db.DataRepository;
 import db.PointOfInterestEntity;
 
 public class PointOfInterestViewModel extends AndroidViewModel {
-    private final List<PointOfInterestEntity> mPois = new List<PointOfInterestEntity>;
+    private List<PointOfInterestEntity> mPois;
 
     public PointOfInterestEntity poi = new PointOfInterestEntity();
 
@@ -49,9 +49,9 @@ public class PointOfInterestViewModel extends AndroidViewModel {
 
         private final DataRepository mRepository;
 
-        public Factory(@NonNull Application application, String mPoiId) {
+        public Factory(@NonNull Application application, String poiId) {
             mApplication = application;
-            mPoiId = mPoiId;
+            mPoiId = poiId;
             mRepository = ((MapunqApp) application).getRepository();
         }
 
