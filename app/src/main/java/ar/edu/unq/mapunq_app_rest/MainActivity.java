@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     ubicacionContentText.setText(analysis.getAnalysis().mostProbablyLocation());
                     TextView infoText = (TextView) findViewById(R.id.labelInfo);
                     TextView contentInfoText = (TextView) findViewById(R.id.poiInfo);
+                    //contentInfoText.setText();
                     TextView ubicacionCercanaIdText = (TextView) findViewById(R.id.lblCerca);
                     ubicacionCercanaIdText.setText(analysis.getAnalysis().almostProbablyLocation());
                 }catch (Exception e){

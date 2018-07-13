@@ -3,6 +3,7 @@ package db;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import model.PointOfInterest;
 
@@ -14,7 +15,7 @@ public class PointOfInterestEntity implements PointOfInterest {
 
     //minima info necesaria de cada punto de interés
 
-    @PrimaryKey
+    @PrimaryKey @NonNull
     private String pointId;
 
     @ColumnInfo(name = "nombre")
