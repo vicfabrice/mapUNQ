@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,6 +40,9 @@ import org.json.JSONObject;
 import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import static android.location.LocationManager.GPS_PROVIDER;
+import static android.location.LocationManager.NETWORK_PROVIDER;
 
 
 /**
@@ -366,36 +370,6 @@ public class ScanService extends Service {
     /**show location
      *
      */
-    public String showData() {
-
-
-        //está harcodeado, cambiar
-        String url = "https://cloud.internalpositioning.com/api/v1/location_basic/unq/celmara";
-        //TextView rssi_msg = (TextView) findViewById(R.id.textOutput);
-        final String[] mRequestBody = {jsonBody.toString()};
-        Log.d(TAG, mRequestBody[0]);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        mRequestBody[0] = response.toString();
-                        //mTextView.setText("Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-
-                    }
-                });
-        Log.d(TAG, mRequestBody[0]);
-        return mRequestBody[0];
-    }
-
-
 
     /**
      * @return the last know best location
@@ -403,8 +377,10 @@ public class ScanService extends Service {
     private Location getLastBestLocation() {
         LocationManager mLocationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
-
-        Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        int permissionCheckGPS = ContextCompat.checkSelfPermission(getApplicationContext(),GPS_PROVIDER);
+        int permissionCheckNETWORK = ContextCompat.checkSelfPermission(getApplicationContext(),NETWORK_PROVIDER);
+        if(permissionCheckGPS == 0 && permissionCheckNETWORK == 0){
+        Location locationGPS = mLocationManager.getLastKnownLocation(GPS_PROVIDER);
         Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
 
@@ -426,5 +402,5 @@ public class ScanService extends Service {
             Log.d("GPS",locationNet.toString());
             return locationNet;
         }
-    }
-}
+    } else {return mLocationManager.getLastKnownLocation(GPS_PROVIDER);}
+}}
