@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                     timer.scheduleAtFixedRate(oneSecondTimer, 1000, 1000);
                     connectWebSocket();
 
-                    String scanningMessage = "buscando ubicación de " + "";
+                    String scanningMessage = "buscando ubicación de dispositivo";
                     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
                             .setSmallIcon(R.drawable.ic_stat_name)
                             .setContentTitle(scanningMessage)
