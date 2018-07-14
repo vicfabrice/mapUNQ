@@ -3,8 +3,10 @@ package ar.edu.unq.mapunq_app_rest;
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -22,6 +25,7 @@ import android.widget.ToggleButton;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -47,7 +51,7 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
-
+import viewmodel.PointOfInterestViewModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     String usernameFile = "mapunqID"; //cambiar nombre
     String user;
+    String lastKnownLoc;
+    String secondLastKnownLoc;
 
     //background manager para usar scanService y despertarDispositivo
     //RemindTask está copiada de find3 find my phone
@@ -101,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WAKE_LOCK, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_WIFI_STATE}, 1);
         }
+
+        //chequea si hay última ubic
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        TextView lastKnownLocEdit = (TextView) findViewById(R.id.lblId);
+        lastKnownLocEdit.setText(sharedPref.getString("lastKnownLoc", ""));
+        TextView secondLastKnownLocEdit = (TextView) findViewById(R.id.lblCerca);
+        secondLastKnownLocEdit.setText(sharedPref.getString("secondLastKnownLoc", ""));
+
 
         //Obtiene un GUID
         String uniqueID = UUID.randomUUID().toString();
@@ -153,45 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         // falta hacer el close del fis?
 
-        //Levanta retrofit para hacer la llamada al server y traerse un json
-        final String BASE_URL = "https://cloud.internalpositioning.com";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        UbicacionHTTPClient service = retrofit.create(UbicacionHTTPClient.class);
-
-        Call<Analysis> call;
-        call = service.getAnalysis(user);
-        call.enqueue(new Callback<Analysis>() {
-
-            @Override
-            public void onResponse(Response<Analysis> response, Retrofit retrofit) {
-                final Analysis analysis = response.body();
-                try {
-                    ArrayList<Guess> data = new ArrayList<>(analysis.getAnalysis().getGuesses());
-
-                    TextView ubicacionIdText = (TextView) findViewById(R.id.labelUb);
-                    final TextView ubicacionContentText = (TextView) findViewById(R.id.lblId);
-                    ubicacionContentText.setText(analysis.getAnalysis().mostProbablyLocation());
-                    TextView infoText = (TextView) findViewById(R.id.labelInfo);
-                    TextView contentInfoText = (TextView) findViewById(R.id.poiInfo);
-                    //contentInfoText.setText();
-                    TextView ubicacionCercanaIdText = (TextView) findViewById(R.id.lblCerca);
-                    ubicacionCercanaIdText.setText(analysis.getAnalysis().almostProbablyLocation());
-                }catch (Exception e){
-                    Log.e("analysis onresponse", e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e("HelloWorld", t.getMessage());
-                Toast.makeText(MainActivity.this, "Ha ocurrido un error al llamar al servicio", Toast.LENGTH_LONG).show();
-            }
-
-        });
 
         //Comportamiento del botón UBICARME - similar a FIND3
         ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
@@ -237,6 +213,61 @@ public class MainActivity extends AppCompatActivity {
                             (android.app.NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
+
+
+                    /////////////
+
+                    //Levanta retrofit para hacer la llamada al server y traerse un json
+                    final String BASE_URL = "https://cloud.internalpositioning.com";
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    UbicacionHTTPClient service = retrofit.create(UbicacionHTTPClient.class);
+
+                    Call<Analysis> call;
+                    call = service.getAnalysis(user);
+                    call.enqueue(new Callback<Analysis>() {
+
+                        @Override
+                        public void onResponse(Response<Analysis> response, Retrofit retrofit) {
+                            final Analysis analysis = response.body();
+                            try {
+                                ArrayList<Guess> data = new ArrayList<>(analysis.getAnalysis().getGuesses());
+
+                                TextView ubicacionIdText = (TextView) findViewById(R.id.labelUb);
+                                final TextView ubicacionContentText = (TextView) findViewById(R.id.lblId);
+                                ubicacionContentText.setText(analysis.getAnalysis().mostProbablyLocation());
+                                lastKnownLoc = analysis.getAnalysis().mostProbablyLocation();
+                                secondLastKnownLoc = analysis.getAnalysis().almostProbablyLocation();
+                                TextView infoText = (TextView) findViewById(R.id.labelInfo);
+                                TextView contentInfoText = (TextView) findViewById(R.id.poiInfo);
+                                //contentInfoText.setText();
+                                TextView ubicacionCercanaIdText = (TextView) findViewById(R.id.lblCerca);
+                                ubicacionCercanaIdText.setText(analysis.getAnalysis().almostProbablyLocation());
+
+                                //Guarda la ubicación para que la app pueda recuperarla la próxima vez q sea usada
+                                SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("lastKnownLoc", lastKnownLoc);
+                                editor.putString("secondLastKnownLoc", secondLastKnownLoc);
+                                editor.commit();
+                            
+
+
+                        }catch (Exception e){
+                                Log.e("analysis onresponse", e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Log.e("HelloWorld", t.getMessage());
+                            Toast.makeText(MainActivity.this, "Ha ocurrido un error al llamar al servicio", Toast.LENGTH_LONG).show();
+                        }
+
+                    });
                 } else {
                     //TextView ubicacionContentText = (TextView) findViewById(R.id.lblId);
                     //ubicacionContentText.setText(analysis.getAnalysis().mostProbablyLocation());
